@@ -6,6 +6,15 @@ de componentes de publicidade e telemetria, baseada no [CleanYourTV](https://git
 Este repositório reúne a fonte utilizada, o perfil aplicado e os scripts de instalação e
 restauração. O ajuste foi realizado e validado em **24 de outubro de 2026**.
 
+## Antes e depois
+
+| Antes — tela inicial original | Depois — AIWA Clean TV |
+| :---: | :---: |
+| ![Tela original com publicidade e recomendações](docs/images/before.png) | ![Tela limpa com Netflix, YouTube, Prime Video e Disney+](docs/images/after.png) |
+
+Capturas reais, sem edição, de **24/10/2026**. A imagem de depois foi registrada após
+reiniciar a TV, confirmando que o launcher novo permaneceu ativo.
+
 ## Estado atual
 
 **Instalado, funcionando e validado após reinício.** O proprietário confirmou que os
@@ -26,8 +35,10 @@ durante o encerramento, uma nova conexão poderá pedir confirmação na tela da
 | Conexão usada | Wi-Fi |
 | Inventário | 142 pacotes originais preservados; 143 após acrescentar o launcher |
 
-O endereço da TV, o nome da rede, contas, identificadores individuais, capturas, chaves
-ADB e backups ficam apenas no ambiente local e não fazem parte do repositório.
+Somente as duas capturas da tela inicial acima foram selecionadas para publicação;
+elas mostram o nome da rede e o avatar visíveis na interface. Capturas de configurações
+e contas, o endereço da TV, identificadores individuais, chaves ADB e backups ficam
+apenas no ambiente local e não fazem parte do repositório.
 
 ## O que foi feito
 
