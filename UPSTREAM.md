@@ -5,10 +5,16 @@
 - SHA-256 do ZIP: `B12598C368C494BE8B0A48634FBE9A5AF03DE6646B0C2C950BC4DA2AA5B9A778`.
 - Diretório preservado: `cleanyourtv-main/`.
 - Launcher: versão 2.7, versionCode 8, `minSdk` 26 e `targetSdk` 34.
-- Única personalização na fonte original: ordem e seleção do array `dock_apps` em
+- Personalização inicial: ordem e seleção do array `dock_apps` em
   `launcher/app/src/main/res/values/config.xml`, com Netflix, YouTube, Prime Video e Disney+.
-- SHA-256 do APK instalado e validado:
+- Alteração local posterior: opção `wallpaper_change_on_home`, desativada por padrão,
+  lida em `Config.java` e acionada por `MainActivity`/`WallpaperPlayer`, com a política
+  testável `WallpaperHomeRefresh` e oito testes JVM. Reutiliza a seleção e o decodificador
+  de imagens locais existentes, sem novas permissões ou dependências.
+- SHA-256 do APK da configuração inicial:
   `90DBBE01F5F81FC27D0D787519DE671AF53FFC9AE72FA77FF8938817B7F778E9`.
+- SHA-256 do APK com wallpapers por eventos:
+  `1D14AEBE2137118803928195FF1685192E82441851FE643F0B31CC16B5CE48AE`.
 
 O hash identifica o snapshot utilizado. Este repositório inicia seu próprio histórico;
 não reproduz o histórico de commits do projeto original nem se apresenta como projeto oficial.

@@ -37,6 +37,8 @@ final class WallpaperPlayer {
     private final List<File> files;
     private final long interval;
     private final String order;
+    private final boolean changeOnHome;
+    private final WallpaperHomeRefresh homeRefresh;
     private final SharedPreferences preferences;
     private final ExecutorService decoder = Executors.newSingleThreadExecutor();
     private final Random random = new Random();
@@ -71,6 +73,8 @@ final class WallpaperPlayer {
         // The dim is painted into the picture (decode), so no full-screen shade layer is drawn on every frame.
         dimColor = config.wallpaperDim > 0 ? (config.wallpaperDim * 255 / 100) << 24 : 0;
         order = config.wallpaperOrder;
+        changeOnHome = config.wallpaperChangeOnHome;
+        homeRefresh = new WallpaperHomeRefresh(changeOnHome);
         preferences = context.getSharedPreferences("wallpaper_rotation", Context.MODE_PRIVATE);
         moods = config.wallpaperMoods;
         latitude = moods.isEmpty() ? "" : context.getString(R.string.latitude);
@@ -106,7 +110,7 @@ final class WallpaperPlayer {
     private void showFirst() {
         String previous = preferences.getString("image", "");
         List<File> playable = playable();
-        File first = WallpaperRotation.find(playable, previous);
+        File first = changeOnHome ? null : WallpaperRotation.find(playable, previous);
         if (first == null) first = WallpaperRotation.pick(playable, previous, order, random);
         while (first != null) {
             Bitmap bitmap = decode(first);
@@ -129,8 +133,14 @@ final class WallpaperPlayer {
     }
 
     void start() {
+        homeRefresh.onResume();
         active = true;
         update();
+    }
+
+    /** onNewIntent is followed by onResume; defer decoding so both events produce just one change. */
+    void onHomeIntent() {
+        homeRefresh.onHomeIntent();
     }
 
     void stop() {
@@ -167,12 +177,13 @@ final class WallpaperPlayer {
 
     void update() {
         if (!active || closed || loading || files.isEmpty()) return;
+        boolean homeChange = homeRefresh.consumeChange();
         String previous = preferences.getString("image", "");
         // A picture outside the time of day's group (the group changed) is replaced at once, not after the interval.
         List<File> playable = playable();
         File selected = WallpaperRotation.find(playable, previous);
         long changed = preferences.getLong("changed", 0);
-        if (selected == null || WallpaperRotation.due(changed, System.currentTimeMillis(), interval)) {
+        if (selected == null || homeChange || WallpaperRotation.due(changed, System.currentTimeMillis(), interval)) {
             selected = WallpaperRotation.pick(playable, previous, order, random);
         }
         if (selected == null || selected.getName().equals(displayed)) return;
@@ -199,6 +210,7 @@ final class WallpaperPlayer {
                     preferences.edit().putString("image", displayed)
                             .putLong("changed", System.currentTimeMillis()).apply();
                 }
+                if (homeRefresh.hasPendingChange()) update();
             });
         });
     }

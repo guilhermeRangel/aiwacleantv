@@ -26,6 +26,7 @@ the rules. Keys from before this rule are on its wanted list; a screenshot for o
 | `glass_style` | <img src="switches/glass_style.jpg" width="320" alt="glass_style halo on a TV"> |
 | `sky_intensity` | <img src="sky-sunset.jpg" width="320" alt="sky_intensity on a TV"> |
 | `wallpaper_rotation_minutes` | <img src="../themes/scenes/screenshot.jpg" width="320" alt="wallpaper_rotation_minutes on a TV"> |
+| `wallpaper_change_on_home` | <img src="switches/wallpaper_change_on_home.png" width="320" alt="Local wallpaper selected on a Home event on an AIWA TV"> |
 | `festival` | <img src="../themes/dussehra/screenshot.jpg" width="320" alt="festival on a TV"> |
 | `settings_key_panel` | <img src="quick-settings-panel.jpg" width="320" alt="settings_key_panel on a TV"> |
 | `home_idle_clock_minutes` | <img src="clock-screensaver.png" width="320" alt="home_idle_clock_minutes on a TV"> |

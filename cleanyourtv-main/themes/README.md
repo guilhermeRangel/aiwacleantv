@@ -41,6 +41,7 @@ A new key needs one there in the same pull request.
 | Key | Type | Meaning |
 |---|---|---|
 | `dock_apps` | list of package names | The dock row, in order; missing apps are skipped |
+| `wallpaper_change_on_home` | bool | Choose another local wallpaper on startup, returning/waking Home, and Home key intents, using `wallpaper_order` (`false` by default). With `wallpaper_rotation_minutes: 0`, the collection changes only on these events; no periodic wallpaper decoding. An immediate repeat is avoided in shuffle mode when more than one image is available |
 | `fill_dock` | bool | Fill the dock slots `dock_apps` leaves free with the first grid apps (true by default); false leaves them empty |
 | `hidden_apps` | list of package names | Never shown as tiles |
 | `live_tv_package`, `live_tv_action` | string | The Live TV app and, if it has no leanback entry, the action to start it with |

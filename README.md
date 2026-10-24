@@ -35,10 +35,10 @@ durante o encerramento, uma nova conexão poderá pedir confirmação na tela da
 | Conexão usada | Wi-Fi |
 | Inventário | 142 pacotes originais preservados; 143 após acrescentar o launcher |
 
-Somente as duas capturas da tela inicial acima foram selecionadas para publicação;
-elas mostram o nome da rede e o avatar visíveis na interface. Capturas de configurações
-e contas, o endereço da TV, identificadores individuais, chaves ADB e backups ficam
-apenas no ambiente local e não fazem parte do repositório.
+O comparativo inicial usa as duas capturas originais acima, que mostram o nome da rede
+e o avatar visíveis na interface. O exemplo de wallpapers mais abaixo oculta o nome da
+rede na própria TV durante a captura. Capturas de configurações e contas, o endereço da
+TV, identificadores individuais, chaves ADB e backups ficam apenas no ambiente local.
 
 ## O que foi feito
 
@@ -55,6 +55,9 @@ apenas no ambiente local e não fazem parte do repositório.
 A tela possui fundo escuro com iluminação ambiente, dock dos favoritos, grade dos demais
 apps e atalhos para Entradas, Rede e Configurações. Os outros aplicativos e seus dados
 continuam disponíveis.
+
+O perfil também permite os wallpapers locais descritos na seção [Wallpapers aleatórios](#wallpapers-aleatórios),
+mantendo os mesmos aplicativos, dock e atalhos.
 
 ### Componentes desativados
 
@@ -112,10 +115,14 @@ essa é uma preferência de manutenção, não um requisito da interface.
 | `batches/` | Listas separadas por etapa |
 | `install.ps1` | Instalação com o instalador oficial, registro de recuperação e verificação do Home |
 | `restore.ps1` | Restauração pelo registro original, sem remover o launcher novo |
+| `apply-wallpapers.ps1` | Envio das imagens numeradas de 1 a 34 com o perfil de troca por eventos |
+| `themes/aiwa-wallpapers/config.json` | Wallpaper aleatório ao iniciar ou retornar ao Home |
+| `images/1.jpg` a `images/34.jpg` | Coleção de wallpapers fornecida para este perfil |
 | `UPSTREAM.md` | Origem, integridade e licenças da fonte |
 
-O snapshot inclui os exemplos, temas, ferramentas e testes do projeto original. A única
-personalização na fonte do launcher foi o array `dock_apps` em `config.xml`.
+O snapshot inclui os exemplos, temas, ferramentas e testes do projeto original. As
+personalizações do launcher são o dock desta TV e a opção `wallpaper_change_on_home`,
+desativada por padrão e habilitada apenas no perfil de wallpapers.
 Os add-ons presentes na fonte original não foram instalados na TV.
 
 ## Ambiente e reinstalação
@@ -175,7 +182,50 @@ Edite `dock_apps` em `cleanyourtv-main/launcher/app/src/main/res/values/config.x
 e execute `install.ps1` novamente. O número de colunas continua em quatro.
 
 Para temas sem recompilar, consulte `cleanyourtv-main/themes/README.md` e
-`cleanyourtv-main/tools/theme.ps1`. Nenhum tema adicional foi aplicado nesta sessão.
+`cleanyourtv-main/tools/theme.ps1`.
+
+## Wallpapers aleatórios
+
+![Tela inicial com um dos wallpapers da coleção](cleanyourtv-main/docs/switches/wallpaper_change_on_home.png)
+
+Captura real da TV com o nome da rede ocultado para publicação.
+
+O perfil usa exatamente as imagens **1.jpg a 34.jpg** da pasta `images/`, todas em
+1600×900, com um total de 15.383.849 bytes. Os arquivos originais não são alterados.
+
+Uma imagem é sorteada ao iniciar o launcher, quando a tela inicial volta ao primeiro
+plano (incluindo acordar a TV) e ao pressionar Home, mesmo se a tela inicial já estiver
+aberta. O sorteio evita repetir imediatamente a imagem anterior e mantém essa referência
+entre reinícios. Ficar parado na tela inicial mantém a imagem escolhida.
+
+A implementação reutiliza o leitor de wallpapers do launcher: os arquivos são enviados
+uma única vez e usados localmente, sem internet. As trocas posteriores decodificam a imagem
+fora da thread da interface, ajustada à resolução da tela, usando o executor já existente.
+Toques repetidos em Home são agrupados em uma solicitação pendente, sem criar uma fila
+de imagens ou processos adicionais. Não há temporizador novo, serviço de fundo ou nova
+dependência. O APK continua abaixo de 512 KB; as imagens não ficam embutidas nele.
+
+O perfil aplica escurecimento de 30% para legibilidade e desliga o brilho ambiente que
+antes coloria o fundo conforme o app selecionado. A ordem dos quatro favoritos permanece igual.
+
+Depois de instalar a versão do launcher deste repositório, aplique ou atualize a coleção:
+
+```powershell
+& .\apply-wallpapers.ps1 -TvHost 'IP_DA_TV'
+```
+
+O script valida a presença das 34 imagens antes de chamar a ferramenta oficial de temas,
+monta uma pasta temporária com cópias e remove somente essa pasta temporária ao terminar.
+Imagens adicionais fora da faixa 1–34 não entram na coleção.
+
+Para ajustar o escurecimento, edite `wallpaper_dim` em `themes/aiwa-wallpapers/config.json`
+e reaplique. Para retornar à aparência original, mantendo o launcher e a limpeza:
+
+```powershell
+& .\cleanyourtv-main\tools\theme.ps1 -TvHost 'IP_DA_TV' -Reset
+```
+
+O reset remove o tema e as cópias da coleção na TV; os originais em `images/` permanecem.
 
 ## Testes e limitações
 
@@ -184,10 +234,16 @@ Os resultados abaixo são da configuração instalada e validada em 24/10/2026:
 | Verificação | Resultado |
 | --- | --- |
 | `testReleaseUnitTest lintRelease assembleRelease` | Build aprovado |
-| Testes Java do launcher | 226 testes; zero falhas e erros |
-| Android lint | Zero erros; 82 avisos |
-| APK release | 509.393 bytes, abaixo do limite de 524.288 bytes |
-| Suíte Python geral no Windows | 877 testes; 2 falhas, 121 erros, 22 ignorados |
+| Testes Java do launcher com wallpapers | 234 testes; zero falhas e erros, incluindo oito testes novos dos eventos Home/retorno |
+| Android lint | Zero erros; 80 avisos |
+| APK release com wallpapers | 509.577 bytes, abaixo do limite de 524.288 bytes |
+| Regressão Python das chaves de tema | 25 testes aprovados |
+| Capturas e documentação das opções | Três testes aprovados; captura real do wallpaper dentro do limite de 300 KB |
+| Scripts PowerShell | Dois testes de envio de wallpapers e dois de proteção da restauração aprovados, em pastas isoladas |
+| Wallpapers na TV | 34 imagens com checksums iguais aos originais; cinco Home consecutivos e retorno de Configurações trocaram o fundo; sem evento a imagem permaneceu igual |
+| Wallpapers após reinício | Tema preservado, outro fundo sorteado e mesmos pacotes desativados |
+| Espera e retorno | Ciclo real `Asleep` → `Awake` acionado por ADB; outro wallpaper confirmado por captura da tela |
+| Suíte Python geral no Windows, executada na configuração inicial | 877 testes; 2 falhas, 121 erros, 22 ignorados; não reexecutada integralmente para esta alteração |
 | Causas dos erros Python | 109 ocorrências de WinError 2 por executáveis ausentes; 12 de WinError 1314 por privilégios de links simbólicos |
 | Causa das duas falhas Python | Testes de documentação esperavam `tools/venv/bin/pip`, enquanto o ambiente Windows utiliza `Scripts` |
 | Quatro favoritos | Abertura e retorno ao Home aprovados |
@@ -217,6 +273,7 @@ O teste isolado da proteção de restauração não acessa a TV:
 
 ```powershell
 & .\tests\Test-RestoreGuard.ps1
+& .\tests\Test-WallpaperDeploy.ps1
 ```
 
 A checagem de espaços da importação identificou dez ocorrências preexistentes em sete

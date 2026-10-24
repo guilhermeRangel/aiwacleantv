@@ -1,0 +1,8 @@
+{
+  "wallpaper": true,
+  "wallpaper_change_on_home": true,
+  "wallpaper_order": "shuffle",
+  "wallpaper_rotation_minutes": 0,
+  "wallpaper_dim": 30,
+  "ambient_glow": false
+}
