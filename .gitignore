@@ -1,0 +1,37 @@
+# Local TV data and credentials
+/backup/
+/backups/
+/logs/
+/shots/
+/package-review/
+.android/
+.cleanyourtv/
+**/adbkey/
+**/adbkey
+**/adbkey.pub
+*.jks
+*.keystore
+.env
+.env.*
+!.env.example
+*.local.ps1
+
+# Local build tools, environments and generated files
+/android-sdk/
+/gradle-home/
+/source-main.zip
+/.tmp/
+**/venv/
+**/.venv/
+**/__pycache__/
+*.py[cod]
+**/.gradle/
+**/build/
+**/local.properties
+*.apk
+*.aab
+*.log
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

@@ -1,0 +1,3 @@
+tv.anoki.acr.anokiacroptin
+com.google.android.feedback
+android.autoinstalls.config.ktc.pai

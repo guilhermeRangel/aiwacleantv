@@ -1,0 +1,11 @@
+# AIWA / KTC SMART TV, stanford, Android 14 (SDK 34).
+# Disable only; retain apps, Assistant, Cast, updates, input and remote services.
+# Restore: .\restore.ps1
+tv.anoki.acr.anokiacroptin                  # Automatic content recognition opt-in service
+com.google.android.feedback                 # Google feedback and crash reporting
+android.autoinstalls.config.ktc.pai           # OEM partner app auto-install configuration
+com.android.adservices.api                   # Android advertising services
+com.android.ondevicepersonalization.services # Advertising personalization
+com.android.federatedcompute.services        # Federated computation for personalization
+com.google.android.tvrecommendations         # Stock Home recommendations and sponsored content
+com.google.android.tvlauncher                # Stock Home; only after replacement is verified
