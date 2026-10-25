@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Персоналізація</string>
+    <string name="wallpaper_random_state">Випадкові шпалери: %1$s</string>
+    <string name="wallpaper_gallery">Галерея шпалер</string>
+    <string name="wallpaper_change_now">Змінити шпалери зараз</string>
+    <string name="wallpaper_dimming">Затемнення: %1$d%%</string>
+    <string name="wallpaper_empty">Немає локальних шпалер</string>
+</resources>

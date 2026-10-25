@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Personalisieren</string>
+    <string name="wallpaper_random_state">Zufällige Hintergründe: %1$s</string>
+    <string name="wallpaper_gallery">Hintergrundgalerie</string>
+    <string name="wallpaper_change_now">Hintergrund jetzt wechseln</string>
+    <string name="wallpaper_dimming">Abdunklung: %1$d%%</string>
+    <string name="wallpaper_empty">Keine lokalen Hintergründe verfügbar</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Kişiselleştir</string>
+    <string name="wallpaper_random_state">Rastgele duvar kağıtları: %1$s</string>
+    <string name="wallpaper_gallery">Duvar kağıdı galerisi</string>
+    <string name="wallpaper_change_now">Duvar kağıdını şimdi değiştir</string>
+    <string name="wallpaper_dimming">Karartma: %1$d%%</string>
+    <string name="wallpaper_empty">Yerel duvar kağıdı yok</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Přizpůsobení</string>
+    <string name="wallpaper_random_state">Náhodné tapety: %1$s</string>
+    <string name="wallpaper_gallery">Galerie tapet</string>
+    <string name="wallpaper_change_now">Změnit tapetu nyní</string>
+    <string name="wallpaper_dimming">Ztmavení: %1$d%%</string>
+    <string name="wallpaper_empty">Žádné místní tapety</string>
+</resources>

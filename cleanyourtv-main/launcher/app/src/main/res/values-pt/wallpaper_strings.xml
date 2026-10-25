@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Personalizar</string>
+    <string name="wallpaper_random_state">Wallpapers aleatórios: %1$s</string>
+    <string name="wallpaper_gallery">Galeria de wallpapers</string>
+    <string name="wallpaper_change_now">Trocar wallpaper agora</string>
+    <string name="wallpaper_dimming">Escurecimento: %1$d%%</string>
+    <string name="wallpaper_empty">Nenhum wallpaper local disponível</string>
+</resources>

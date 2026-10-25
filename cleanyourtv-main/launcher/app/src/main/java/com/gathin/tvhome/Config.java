@@ -576,27 +576,40 @@ final class Config {
         boolean wallpaperChangeOnHome = res.getBoolean(R.bool.wallpaper_change_on_home);
         if (json != null) wallpaperChangeOnHome = bool(json, "wallpaper_change_on_home", wallpaperChangeOnHome);
         int wallpaperDim = json == null ? 0 : integer(json, "wallpaper_dim", 0, 0, 90);
+        WallpaperPreferences wallpaperPreferences = new WallpaperPreferences(ctx);
+        wallpaperDim = wallpaperPreferences.dim(wallpaperDim);
         int dockOpacity = json == null ? 100 : integer(json, "dock_opacity", 100, 30, 100);
         dockOpacity = chosenDockOpacity(choices.getInt(DOCK_OPACITY_KEY, -1), dockOpacity);
         String wallpaperOrder = json == null ? WallpaperRotation.ORDER_SHUFFLE
                 : string(json, "wallpaper_order", WallpaperRotation.ORDER_SHUFFLE);
         // An unknown order must not silently change how an existing collection rotates.
         if (!WallpaperRotation.validOrder(wallpaperOrder)) wallpaperOrder = WallpaperRotation.ORDER_SHUFFLE;
+        if (wallpaperPreferences.hasRandomOverride()) {
+            rotationMinutes = 0;
+            wallpaperChangeOnHome = wallpaperPreferences.randomEnabled(false);
+            if (wallpaperChangeOnHome) {
+                wallpaperOrder = WallpaperRotation.ORDER_SHUFFLE;
+                wallpaperEnabled = true;
+            }
+        }
+        List<File> availableWallpapers = WallpaperRotation.available(dir);
         List<File> wallpapers = new ArrayList<>();
         if ((rotationMinutes > 0 || wallpaperChangeOnHome) && dir != null && wallpaperEnabled) {
-            wallpapers.addAll(WallpaperRotation.images(new File(dir, "wallpapers")));
+            wallpapers.addAll(wallpaperPreferences.hasRandomOverride() ? availableWallpapers
+                    : WallpaperRotation.images(new File(dir, "wallpapers")));
         }
         if (wallpapers.isEmpty() && wallpaper != null) wallpapers.add(wallpaper);
         // An on-TV wallpaper pick overrides the theme: a filename from the wallpapers/
         // collection, or "none". Unset means the theme decides (off by default).
         String wallpaperChoice = choices.getString(WALLPAPER_CHOICE_KEY, null);
-        List<File> chosen = WallpaperRotation.chosen(dir == null ? Collections.emptyList()
-                : WallpaperRotation.images(new File(dir, "wallpapers")), wallpaper, wallpaperChoice);
+        List<File> chosen = WallpaperRotation.chosen(availableWallpapers, null, wallpaperChoice);
         if (chosen != null) {
             wallpapers.clear();
             wallpapers.addAll(chosen);
             wallpaper = chosen.isEmpty() ? null : chosen.get(0);
             wallpaperEnabled = !chosen.isEmpty();
+            wallpaperChangeOnHome = false;
+            rotationMinutes = 0;
         }
         // A festive skin comes only from a theme; config.xml has no festival.
         Festival festival = json == null ? Festival.NONE : Festival.parse(string(json, "festival", ""),
@@ -654,11 +667,13 @@ final class Config {
             SharedPreferences.Editor editor = choices.edit();
             if (!"absent".equals(token)) editor.remove("columns").remove("animations")
                     .remove("advanced_effects").remove(ROWS_BELOW_DOCK_KEY).remove(WALLPAPER_CHOICE_KEY)
+                    .remove(WallpaperPreferences.RANDOM).remove(WallpaperPreferences.DIM).remove(WallpaperPreferences.REQUESTED)
                     .remove(DOCK_OPACITY_KEY);
             editor.putString(THEME_SIGNATURE_KEY, signature).commit();
         } else if (!seen.equals(signature)) {
             choices.edit().remove("columns").remove("animations").remove("advanced_effects")
                     .remove(ROWS_BELOW_DOCK_KEY).remove(WALLPAPER_CHOICE_KEY).remove(DOCK_OPACITY_KEY)
+                    .remove(WallpaperPreferences.RANDOM).remove(WallpaperPreferences.DIM).remove(WallpaperPreferences.REQUESTED)
                     .putString(THEME_SIGNATURE_KEY, signature).commit();
         }
     }

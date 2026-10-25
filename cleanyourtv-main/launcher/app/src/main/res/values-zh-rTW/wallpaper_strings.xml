@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">個人化</string>
+    <string name="wallpaper_random_state">隨機桌布：%1$s</string>
+    <string name="wallpaper_gallery">桌布圖庫</string>
+    <string name="wallpaper_change_now">立即更換桌布</string>
+    <string name="wallpaper_dimming">暗化：%1$d%%</string>
+    <string name="wallpaper_empty">沒有可用的本機桌布</string>
+</resources>

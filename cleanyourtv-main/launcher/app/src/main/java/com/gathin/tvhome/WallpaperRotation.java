@@ -40,6 +40,17 @@ final class WallpaperRotation {
         return null;
     }
 
+    /** Inventory for the on-TV gallery, including a theme's optional single picture. */
+    static List<File> available(File directory) {
+        List<File> result = images(directory == null ? null : new File(directory, "wallpapers"));
+        File single = directory == null ? null : new File(directory, Config.WALLPAPER_NAME);
+        if (single != null && single.isFile() && single.length() > 0
+                && single.length() <= 10 * 1024 * 1024 && find(result, single.getName()) == null) {
+            result.add(0, single);
+        }
+        return result;
+    }
+
     /** The on-TV choice (Launcher settings, Wallpaper) that turns the wallpaper off. */
     static final String CHOICE_NONE = "none";
 

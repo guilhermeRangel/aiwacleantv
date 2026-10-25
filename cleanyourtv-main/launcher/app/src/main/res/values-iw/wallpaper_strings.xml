@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">התאמה אישית</string>
+    <string name="wallpaper_random_state">רקעים אקראיים: %1$s</string>
+    <string name="wallpaper_gallery">גלריית רקעים</string>
+    <string name="wallpaper_change_now">החלפת רקע כעת</string>
+    <string name="wallpaper_dimming">הכהיה: %1$d%%</string>
+    <string name="wallpaper_empty">אין רקעים מקומיים זמינים</string>
+</resources>

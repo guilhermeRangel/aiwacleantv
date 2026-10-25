@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Personalitza</string>
+    <string name="wallpaper_random_state">Fons aleatoris: %1$s</string>
+    <string name="wallpaper_gallery">Galeria de fons</string>
+    <string name="wallpaper_change_now">Canvia el fons ara</string>
+    <string name="wallpaper_dimming">Enfosquiment: %1$d%%</string>
+    <string name="wallpaper_empty">No hi ha fons locals disponibles</string>
+</resources>

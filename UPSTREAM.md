@@ -15,6 +15,14 @@
   `90DBBE01F5F81FC27D0D787519DE671AF53FFC9AE72FA77FF8938817B7F778E9`.
 - SHA-256 do APK com wallpapers por eventos:
   `1D14AEBE2137118803928195FF1685192E82441851FE643F0B31CC16B5CE48AE`.
+- Versão local 2.8, versionCode 9: engrenagem de personalização, galeria com prévia,
+  modo fixo/aleatório, troca manual e escurecimento persistido na TV. Reutiliza o
+  player e as preferências existentes; o decodificador foi extraído para uso comum.
+  Inclui testes JVM de preferências, navegação e inventário, e rótulos nos 25 idiomas.
+  Não acrescenta permissões, serviços ou dependências. Metadados VCS do APK foram
+  desativados para que o build não consulte o controle de versão.
+- SHA-256 do APK 2.8 com personalização pela TV:
+  `39C3A4B550F8DB0CC2D9DED0DCA888EDA02BC5FAAAABD41094A3F4256D909D26`.
 
 O hash identifica o snapshot utilizado. Este repositório inicia seu próprio histórico;
 não reproduz o histórico de commits do projeto original nem se apresenta como projeto oficial.

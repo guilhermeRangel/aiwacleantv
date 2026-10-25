@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Cá nhân hóa</string>
+    <string name="wallpaper_random_state">Hình nền ngẫu nhiên: %1$s</string>
+    <string name="wallpaper_gallery">Thư viện hình nền</string>
+    <string name="wallpaper_change_now">Đổi hình nền ngay</string>
+    <string name="wallpaper_dimming">Độ tối: %1$d%%</string>
+    <string name="wallpaper_empty">Không có hình nền cục bộ</string>
+</resources>

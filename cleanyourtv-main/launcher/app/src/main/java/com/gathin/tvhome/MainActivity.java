@@ -29,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.media.tv.TvContract;
 import android.media.tv.TvInputInfo;
 import android.media.tv.TvInputManager;
@@ -415,6 +416,22 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // the theme's background, so launch looks the same.
         getWindow().setBackgroundDrawable(null);
         wallpaperPlayer = new WallpaperPlayer(this, root, cfg);
+        if (cfg.wallpaperEnabled && !cfg.wallpapers.isEmpty()) {
+            // Keep the text readable over light pictures even with the user's dim set to zero.
+            for (int id : new int[]{R.id.clock, R.id.ampm, R.id.date, R.id.greeting,
+                    R.id.shamsiDate, R.id.lunarDate, R.id.heroName, R.id.heroMeta, R.id.stats}) {
+                TextView text = findViewById(id);
+                text.setShadowLayer(3 * density, 0, density, Color.BLACK);
+            }
+            for (int id : new int[]{R.id.btnInputs, R.id.btnWifi, R.id.btnSettings,
+                    R.id.btnReorder, R.id.btnLibraryTop}) {
+                View button = findViewById(id);
+                GradientDrawable backing = new GradientDrawable();
+                backing.setColor(0xAA000000);
+                backing.setCornerRadius(21 * density);
+                button.setBackground(new LayerDrawable(new Drawable[]{backing, button.getBackground()}));
+            }
+        }
         sky = findViewById(R.id.sky);
         sky.setIntensity(cfg.skyIntensity);
         glass = findViewById(R.id.glass);
@@ -687,15 +704,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             return true;
         });
         launcherSettingsButton = cfg.launcherSettingsButton;
-        if (launcherSettingsButton) {
-            ((TextView) btnSettings).setText(R.string.launcher_settings);
-            ((TextView) btnSettings).setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_home_settings_pill, 0, 0, 0);
-        }
-        btnSettings.setOnClickListener(v -> {
-            if (launcherSettingsButton) startActivityForResult(
-                    new Intent(this, LauncherSettingsActivity.class), LAUNCHER_SETTINGS_REQUEST);
-            else open(systemIntent(Settings.ACTION_SETTINGS));
-        });
+        ((TextView) btnSettings).setText(R.string.wallpaper_personalize);
+        btnSettings.setOnClickListener(v -> startActivityForResult(
+                new Intent(this, WallpaperSettingsActivity.class), LAUNCHER_SETTINGS_REQUEST));
         btnReorder = findViewById(R.id.btnReorder);
         btnReorder.setOnClickListener(v -> toggleReorder());
         btnReorder.setVisibility(cfg.reorderButton ? View.VISIBLE : View.GONE);
@@ -3116,6 +3127,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             status.setVisibility(View.VISIBLE);
         }
         addInputRow(rows, popup, R.drawable.ic_swap_vert, getString(R.string.reorder), -1, this::toggleReorder);
+        addInputRow(rows, popup, R.drawable.ic_settings, getString(R.string.wallpaper_personalize), -1,
+                () -> startActivityForResult(new Intent(this, WallpaperSettingsActivity.class), LAUNCHER_SETTINGS_REQUEST));
         if (launcherSettingsButton) {
             addInputRow(rows, popup, R.drawable.ic_home_settings_pill, getString(R.string.launcher_settings), -1,
                     () -> startActivityForResult(new Intent(this, LauncherSettingsActivity.class), LAUNCHER_SETTINGS_REQUEST));

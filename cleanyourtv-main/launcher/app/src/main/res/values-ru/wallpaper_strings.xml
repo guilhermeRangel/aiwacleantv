@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Настроить</string>
+    <string name="wallpaper_random_state">Случайные обои: %1$s</string>
+    <string name="wallpaper_gallery">Галерея обоев</string>
+    <string name="wallpaper_change_now">Сменить обои сейчас</string>
+    <string name="wallpaper_dimming">Затемнение: %1$d%%</string>
+    <string name="wallpaper_empty">Нет локальных обоев</string>
+</resources>

@@ -19,6 +19,28 @@ import org.junit.Test;
 
 public class WallpaperRotationTest {
 
+    @org.junit.Rule public final org.junit.rules.TemporaryFolder galleryFiles = new org.junit.rules.TemporaryFolder();
+
+    @Test public void galleryIncludesSingleAndCollectionWithoutDuplicateNames() throws IOException {
+        File root = galleryFiles.newFolder();
+        File walls = new File(root, "wallpapers");
+        assertTrue(walls.mkdir());
+        touch(root, "wallpaper.jpg", 10);
+        touch(walls, "1.jpg", 10);
+        touch(walls, "2.jpg", 10);
+        assertEquals(Arrays.asList("wallpaper.jpg", "1.jpg", "2.jpg"), names(WallpaperRotation.available(root)));
+        touch(walls, "wallpaper.jpg", 10);
+        assertEquals(Arrays.asList("1.jpg", "2.jpg", "wallpaper.jpg"), names(WallpaperRotation.available(root)));
+    }
+
+    @Test public void emptyOrMissingGalleryNeedsNoStorageOrNewFiles() throws IOException {
+        File root = galleryFiles.newFolder();
+        touch(root, "wallpaper.jpg", 0);
+        assertTrue(WallpaperRotation.available(root).isEmpty());
+        assertTrue(WallpaperRotation.available(null).isEmpty());
+        assertEquals(1, root.listFiles().length);
+    }
+
     private static File touch(File dir, String name, int bytes) throws IOException {
         File f = new File(dir, name);
         try (FileOutputStream out = new FileOutputStream(f)) {

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Shaxsiylashtirish</string>
+    <string name="wallpaper_random_state">Tasodifiy fonlar: %1$s</string>
+    <string name="wallpaper_gallery">Fonlar galereyasi</string>
+    <string name="wallpaper_change_now">Fonni hozir almashtirish</string>
+    <string name="wallpaper_dimming">Qoraytirish: %1$d%%</string>
+    <string name="wallpaper_empty">Mahalliy fonlar mavjud emas</string>
+</resources>

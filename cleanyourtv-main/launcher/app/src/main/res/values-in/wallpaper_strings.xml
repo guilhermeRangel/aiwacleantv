@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Personalisasi</string>
+    <string name="wallpaper_random_state">Wallpaper acak: %1$s</string>
+    <string name="wallpaper_gallery">Galeri wallpaper</string>
+    <string name="wallpaper_change_now">Ganti wallpaper sekarang</string>
+    <string name="wallpaper_dimming">Peredupan: %1$d%%</string>
+    <string name="wallpaper_empty">Tidak ada wallpaper lokal</string>
+</resources>

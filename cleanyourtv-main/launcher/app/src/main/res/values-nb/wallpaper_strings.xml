@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Tilpass</string>
+    <string name="wallpaper_random_state">Tilfeldige bakgrunner: %1$s</string>
+    <string name="wallpaper_gallery">Bakgrunnsgalleri</string>
+    <string name="wallpaper_change_now">Bytt bakgrunn nå</string>
+    <string name="wallpaper_dimming">Demping: %1$d%%</string>
+    <string name="wallpaper_empty">Ingen lokale bakgrunner tilgjengelig</string>
+</resources>

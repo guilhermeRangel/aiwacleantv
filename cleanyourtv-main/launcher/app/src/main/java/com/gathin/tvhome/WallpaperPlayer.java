@@ -3,8 +3,6 @@ package com.gathin.tvhome;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -40,6 +38,7 @@ final class WallpaperPlayer {
     private final boolean changeOnHome;
     private final WallpaperHomeRefresh homeRefresh;
     private final SharedPreferences preferences;
+    private final WallpaperPreferences choices;
     private final ExecutorService decoder = Executors.newSingleThreadExecutor();
     private final Random random = new Random();
     private final int width;
@@ -47,7 +46,7 @@ final class WallpaperPlayer {
     private final Bitmap.Config bitmapConfig;
     private final int height;
     /** wallpaper_dim as an ARGB black, painted into each picture once instead of a full-screen shade view. */
-    private final int dimColor;
+    private final int dim;
     /** The picture on screen, released once the next one has been drawn. */
     private Bitmap current;
     private boolean active;
@@ -71,11 +70,12 @@ final class WallpaperPlayer {
         interval = config.wallpaperRotationMinutes * 60_000L;
         bitmapConfig = config.wallpaperTrueColor ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
         // The dim is painted into the picture (decode), so no full-screen shade layer is drawn on every frame.
-        dimColor = config.wallpaperDim > 0 ? (config.wallpaperDim * 255 / 100) << 24 : 0;
+        dim = config.wallpaperDim;
         order = config.wallpaperOrder;
         changeOnHome = config.wallpaperChangeOnHome;
         homeRefresh = new WallpaperHomeRefresh(changeOnHome);
         preferences = context.getSharedPreferences("wallpaper_rotation", Context.MODE_PRIVATE);
+        choices = new WallpaperPreferences(context);
         moods = config.wallpaperMoods;
         latitude = moods.isEmpty() ? "" : context.getString(R.string.latitude);
         longitude = moods.isEmpty() ? "" : context.getString(R.string.longitude);
@@ -110,7 +110,8 @@ final class WallpaperPlayer {
     private void showFirst() {
         String previous = preferences.getString("image", "");
         List<File> playable = playable();
-        File first = changeOnHome ? null : WallpaperRotation.find(playable, previous);
+        File first = choices.requestedFile(files);
+        if (first == null) first = changeOnHome ? null : WallpaperRotation.find(playable, previous);
         if (first == null) first = WallpaperRotation.pick(playable, previous, order, random);
         while (first != null) {
             Bitmap bitmap = decode(first);
@@ -119,6 +120,7 @@ final class WallpaperPlayer {
                 // The picture covers the whole screen: the root's plain colour under it is overdraw.
                 root.setBackground(null);
                 displayed = first.getName();
+                choices.consumed(displayed);
                 showCaption(false);
                 if (!displayed.equals(previous)) {
                     preferences.edit().putString("image", displayed)
@@ -127,6 +129,7 @@ final class WallpaperPlayer {
                 return;
             }
             files.remove(first);   // unreadable or over 4K: try another, or keep the plain colour
+            choices.consumed(first.getName());
             playable = playable();
             first = WallpaperRotation.pick(playable, previous, order, random);
         }
@@ -282,35 +285,6 @@ final class WallpaperPlayer {
     }
 
     private Bitmap decode(File file) {
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(file.getPath(), options);
-            int width = options.outWidth, height = options.outHeight;
-            if (width <= 0 || height <= 0) return null;
-            int sample = WallpaperSize.sampleSize(width, height, this.width, this.height);
-            if (!WallpaperSize.accepted(width / sample, height / sample)) return null;
-            options.inJustDecodeBounds = false;
-            options.inSampleSize = sample;
-            int[] scale = WallpaperSize.coverScale(width / sample, height / sample, this.width, this.height);
-            if (scale != null) {
-                options.inScaled = true;
-                options.inDensity = scale[0];
-                options.inTargetDensity = scale[1];
-            }
-            options.inPreferredConfig = bitmapConfig;
-            options.inMutable = dimColor != 0;
-            Bitmap decoded = BitmapFactory.decodeFile(file.getPath(), options);
-            if (decoded == null) return null;
-            if (dimColor != 0) new Canvas(decoded).drawColor(dimColor);
-            // One copy in GPU memory instead of a software bitmap plus its texture; the decode stays off the UI
-            // thread for rotations, and Home's return no longer uploads 4-8 MB to the GPU.
-            Bitmap gpu = decoded.copy(Bitmap.Config.HARDWARE, false);
-            if (gpu == null) return decoded;
-            decoded.recycle();
-            return gpu;
-        } catch (Exception | OutOfMemoryError failure) {
-            return null;
-        }
+        return WallpaperDecoder.decode(file, width, height, bitmapConfig, dim, true);
     }
 }

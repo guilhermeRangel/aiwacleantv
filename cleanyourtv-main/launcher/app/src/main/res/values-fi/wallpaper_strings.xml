@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Mukauta</string>
+    <string name="wallpaper_random_state">Satunnaiset taustakuvat: %1$s</string>
+    <string name="wallpaper_gallery">Taustakuvagalleria</string>
+    <string name="wallpaper_change_now">Vaihda taustakuva nyt</string>
+    <string name="wallpaper_dimming">Tummennus: %1$d%%</string>
+    <string name="wallpaper_empty">Ei paikallisia taustakuvia</string>
+</resources>

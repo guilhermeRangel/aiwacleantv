@@ -517,7 +517,7 @@ The **TV** needs Android 8.0 (API 26) or newer: `minSdk` is a compile-time floor
 | What | How it works |
 |---|---|
 | **Configure** | Dock order, hidden apps, Live TV app, 4 to 7 tiles per row, reduced motion. All in [`config.xml`](launcher/app/src/main/res/values/config.xml) |
-| **Settings on the TV** | Hold OK on Settings for launcher settings. Optional `launcher_settings_button` makes a normal click open them directly; TV settings remain on the settings page and their app tile. |
+| **Settings on the TV (AIWA fork)** | The gear opens wallpaper personalization: random mode, thumbnail gallery, preview, one-shot shuffle and dimming. Launcher settings and TV settings remain available in that menu. |
 | **Themes** | Background, wallpaper and layout from a `config.json` pushed over Wi-Fi, no rebuild. eight ship in [`themes/`](themes/), the built-in `default/` included |
 | **25 languages** | Follows the TV's language, with a fully mirrored right-to-left layout for Hebrew |
 | **App library** | Optional: browse every installed app and add or remove Home shortcuts. See [the app library guide](docs/app-library.md) |
@@ -549,16 +549,20 @@ and a wallpaper.
 <details>
 <summary><b>Launcher settings and the default home</b></summary>
 
-- Click **Settings** for the TV's own settings. Hold OK on it and choose **Launcher settings**, or click it
-  straight away with `launcher_settings_button`. The launcher's own page has these rows, top to bottom:
+- In this AIWA fork, click **Personalize** (the gear), then **Launcher settings**. The menu also keeps
+  **TV settings**. The launcher's general page has these rows, top to bottom:
   - **Reorder apps**, only with `launcher_settings_button`: OK picks an app up, the arrows move it, Back
     places it, and Back again finishes.
   - **Apps per row** 4, 5, 6 or 7; **Rows below dock** 0 to 3, how many rows of tiles stay visible under the
     dock band; **Dock band opacity** 100%, 70%, 50% or 30%. The last two only do anything while the dock is
     its own row (`dock_row`, on by default).
-  - **Wallpaper**: one picture from the theme's collection (or its `wallpaper.jpg`), **None**, or **Theme
-    default**. A pick holds that picture and stops the rotation until you choose Theme default, press
-    Follow theme, or push the theme again.
+  - **Wallpaper** opens the same personalization menu as the Home gear. Browse the local collection
+    (or `wallpaper.jpg`) in a four-column grid; OK previews an image, then OK confirms or Cancel/Back
+    returns without applying it. Confirmation disables random mode and keeps the selected picture
+    across Home, sleep and restart. **Change wallpaper now** preserves the current random-mode setting.
+    Dimming is adjustable from 0 to 70%; preview adjustments are saved only on confirmation.
+    **None** and **Theme default** remain available. General settings' Follow theme, an explicit theme
+    push/reset, or clearing app data removes the on-TV overrides. See the [AIWA guide](../README.md#personalização-de-wallpapers-pela-tv).
   - **Animations** on or off, and **Advanced effects** (tile lift, icon zoom and smooth ambient-colour
     transitions; they may use more memory) once animations are on.
   - **Open on start**, only with `open_on_start_choice`: Off, or an app that opens instead of Home the first

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">Prilagodi</string>
+    <string name="wallpaper_random_state">Nasumične pozadine: %1$s</string>
+    <string name="wallpaper_gallery">Galerija pozadina</string>
+    <string name="wallpaper_change_now">Promeni pozadinu sada</string>
+    <string name="wallpaper_dimming">Zatamnjenje: %1$d%%</string>
+    <string name="wallpaper_empty">Nema lokalnih pozadina</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">ব্যক্তিগতকরণ</string>
+    <string name="wallpaper_random_state">এলোমেলো ওয়ালপেপার: %1$s</string>
+    <string name="wallpaper_gallery">ওয়ালপেপার গ্যালারি</string>
+    <string name="wallpaper_change_now">এখন ওয়ালপেপার বদলান</string>
+    <string name="wallpaper_dimming">অন্ধকারের মাত্রা: %1$d%%</string>
+    <string name="wallpaper_empty">কোনো স্থানীয় ওয়ালপেপার নেই</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">تخصيص</string>
+    <string name="wallpaper_random_state">خلفيات عشوائية: %1$s</string>
+    <string name="wallpaper_gallery">معرض الخلفيات</string>
+    <string name="wallpaper_change_now">تغيير الخلفية الآن</string>
+    <string name="wallpaper_dimming">التعتيم: %1$d%%</string>
+    <string name="wallpaper_empty">لا توجد خلفيات محلية</string>
+</resources>

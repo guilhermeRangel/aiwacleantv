@@ -19,8 +19,8 @@ reiniciar a TV, confirmando que o launcher novo permaneceu ativo.
 
 **Instalado, funcionando e validado após reinício.** O proprietário confirmou que os
 botões do controle funcionam. O ADB TCP na porta **5555 permanece aberto por solicitação
-do proprietário**, para permitir melhorias futuras. Como as autorizações foram revogadas
-durante o encerramento, uma nova conexão poderá pedir confirmação na tela da TV.
+do proprietário**, para permitir melhorias futuras. A autorização deste computador
+permaneceu válida após o reinício usado nos testes da versão 2.8.
 
 | Item | Valor observado |
 | --- | --- |
@@ -31,7 +31,7 @@ durante o encerramento, uma nova conexão poderá pedir confirmação na tela da
 | Sistema | Android 14, SDK 34 |
 | Build | `UKNV.260602.001` |
 | Kernel | `5.15.192+` |
-| Launcher instalado | `com.gathin.tvhome`, versão 2.7 |
+| Launcher instalado | `com.gathin.tvhome`, versão 2.8 |
 | Conexão usada | Wi-Fi |
 | Inventário | 142 pacotes originais preservados; 143 após acrescentar o launcher |
 
@@ -53,7 +53,7 @@ TV, identificadores individuais, chaves ADB e backups ficam apenas no ambiente l
 7. Testes de abertura dos quatro apps, navegação, configurações, rede, reinício e controle físico.
 
 A tela possui fundo escuro com iluminação ambiente, dock dos favoritos, grade dos demais
-apps e atalhos para Entradas, Rede e Configurações. Os outros aplicativos e seus dados
+apps e atalhos para Entradas, Rede e Personalizar. Os outros aplicativos e seus dados
 continuam disponíveis.
 
 O perfil também permite os wallpapers locais descritos na seção [Wallpapers aleatórios](#wallpapers-aleatórios),
@@ -121,8 +121,8 @@ essa é uma preferência de manutenção, não um requisito da interface.
 | `UPSTREAM.md` | Origem, integridade e licenças da fonte |
 
 O snapshot inclui os exemplos, temas, ferramentas e testes do projeto original. As
-personalizações do launcher são o dock desta TV e a opção `wallpaper_change_on_home`,
-desativada por padrão e habilitada apenas no perfil de wallpapers.
+personalizações do launcher incluem o dock desta TV, a opção `wallpaper_change_on_home`
+e o menu de wallpapers controlado diretamente pelo controle remoto.
 Os add-ons presentes na fonte original não foram instalados na TV.
 
 ## Ambiente e reinstalação
@@ -218,8 +218,9 @@ O script valida a presença das 34 imagens antes de chamar a ferramenta oficial 
 monta uma pasta temporária com cópias e remove somente essa pasta temporária ao terminar.
 Imagens adicionais fora da faixa 1–34 não entram na coleção.
 
-Para ajustar o escurecimento, edite `wallpaper_dim` em `themes/aiwa-wallpapers/config.json`
-e reaplique. Para retornar à aparência original, mantendo o launcher e a limpeza:
+O escurecimento também pode ser ajustado na TV pelo menu descrito abaixo. O valor do
+JSON continua sendo o padrão quando não há uma preferência local. Para retornar à
+aparência original, mantendo o launcher e a limpeza:
 
 ```powershell
 & .\cleanyourtv-main\tools\theme.ps1 -TvHost 'IP_DA_TV' -Reset
@@ -227,29 +228,140 @@ e reaplique. Para retornar à aparência original, mantendo o launcher e a limpe
 
 O reset remove o tema e as cópias da coleção na TV; os originais em `images/` permanecem.
 
+## Personalização de wallpapers pela TV
+
+Na versão **2.8**, selecione a engrenagem **Personalizar** da Home. Todas as opções abaixo
+funcionam pelas setas, OK e Voltar do controle remoto, sem ADB ou internet no uso diário.
+As configurações do launcher e do sistema da TV continuam acessíveis nesse menu.
+
+![Menu de personalização na TV](docs/images/wallpaper-settings.png)
+
+Captura real de um exemplo fixo com 35% de escurecimento. Ao encerrar os testes, foram
+restaurados o sorteio ativo e os 30% do tema.
+
+| Opção | Comportamento |
+| --- | --- |
+| **Wallpapers aleatórios** | Ativa ou desativa as trocas ao iniciar, acordar e voltar à Home. Desativar mantém a imagem atual fixa. |
+| **Galeria de wallpapers** | Grade de quatro colunas com miniaturas das imagens locais. As setas percorrem a grade; OK abre a prévia em tela cheia. |
+| **Prévia: OK / Cancelar** | OK aplica a imagem e o escurecimento da prévia imediatamente e desativa o sorteio. Cancelar ou Voltar retorna à mesma miniatura sem salvar a prévia. |
+| **Trocar wallpaper agora** | Sorteia outra imagem sem repetir a atual quando há alternativas. Mantém o modo aleatório ativado ou desativado como estava. |
+| **Escurecimento** | Ajuste de 0% a 70%, pelas setas esquerda/direita em passos de 5%. A prévia acompanha cada alteração. No menu, salva imediatamente; na prévia de uma imagem, salva somente ao confirmar. |
+| **Nenhum / Padrão do tema** | Desliga o wallpaper ou remove somente as preferências locais de wallpaper, voltando ao tema instalado. |
+
+### Galeria de wallpapers
+
+![Galeria de wallpapers com navegação por controle remoto](docs/images/wallpaper-gallery.jpg)
+
+Captura real da grade na TV, exportada em JPEG para reduzir o tamanho da documentação.
+A coleção deste perfil contém as 34 imagens locais, sem downloads durante a navegação.
+
+Para escolher uma imagem fixa:
+
+1. Na Home, abra **Personalizar → Galeria de wallpapers**.
+2. Use as setas para mover o destaque entre as miniaturas. A grade tem quatro colunas
+   e rola automaticamente para acompanhar o foco.
+3. Pressione **OK** na miniatura para abrir a imagem em tela cheia.
+4. Se desejar, vá até o controle **Escurecimento** e ajuste com esquerda/direita.
+5. Selecione **OK** na parte inferior para confirmar. A imagem é aplicada imediatamente
+   na Home, com o escurecimento escolhido, e o modo aleatório é desativado.
+
+A prévia começa com **Cancelar** em foco. Pressionar esse botão ou **Voltar** descarta
+a escolha e os ajustes feitos nessa prévia, retornando à mesma miniatura. A confirmação
+fica disponível depois que a imagem termina de carregar. Na galeria, **Voltar** retorna
+ao menu; o botão **Personalizar** no topo também permite esse retorno.
+
+O foco permanece dentro da grade nas bordas esquerda, direita e inferior, inclusive na
+última linha incompleta. Seta para cima na primeira linha alcança o botão do topo;
+seta para baixo nele retorna à miniatura. A ordem segue os nomes dos arquivos, e não
+uma ordenação numérica: `1.jpg`, `10.jpg`, `11.jpg`, …, `2.jpg`, `20.jpg`, ….
+
+A infraestrutura aceita JPEG (`.jpg` e `.jpeg`), PNG e WebP, até 10 MiB por arquivo e
+até 100 imagens na pasta `wallpapers/`, além do `wallpaper.jpg` opcional do tema.
+O script deste perfil continua enviando somente `images/1.jpg` a `images/34.jpg`.
+Adicionar arquivos à pasta do computador não os transfere automaticamente para a TV.
+A galeria seleciona as imagens já instaladas; não possui importação, exclusão ou edição
+dos arquivos pelo controle remoto.
+
+### Modos de troca e preferências
+
+Com **Wallpapers aleatórios** ativado, voltar à Home, acordar a TV ou iniciar o launcher
+provoca um novo sorteio. Não há troca periódica enquanto a Home fica parada. Desativar
+essa opção mantém a imagem atual, inclusive depois de reiniciar a TV.
+
+**Trocar wallpaper agora** faz apenas uma troca: se o modo estava desativado, a nova
+imagem passa a ficar fixa; se estava ativado, os próximos eventos de Home e despertar
+continuam sorteando. Confirmar uma imagem na galeria sempre escolhe o modo fixo.
+
+### Persistência e desempenho
+
+O modo fixo, a imagem e o escurecimento são salvos no armazenamento privado do app
+(`launcher_settings`). A referência da última imagem continua no armazenamento já usado
+pelo player (`wallpaper_rotation`). Atualizar o APK com `install -r` preserva os dados.
+Usuários existentes continuam com seu tema, imagem fixa ou opção Nenhum e escurecimento
+atuais; abrir o menu não grava novos padrões. O tema deste perfil começa com sorteio
+ativado e escurecimento de 30%.
+
+A galeria reutiliza o inventário e o decodificador do launcher, inclusive `wallpaper.jpg`
+quando presente. As miniaturas são carregadas sob demanda, em uma única thread, com cache
+limitado a 2 MiB. A prévia mantém uma imagem em tamanho de tela; ajustar o escurecimento
+altera apenas uma camada preta sobre ela, sem nova decodificação. Ao sair da tela, o
+executor é encerrado e as referências e o cache são liberados. O player da Home continua
+aplicando o escurecimento na imagem decodificada, sem adicionar uma camada permanente.
+Textos sobre a imagem receberam sombras discretas, e os atalhos superiores mantêm um
+fundo escuro e seu foco original, inclusive com uma imagem clara e escurecimento de 0%.
+
+Não foram adicionadas dependências, permissões, serviços ou mudanças em componentes do
+Android. O carregamento inicial da Home segue o caminho existente. O seletor antigo de
+nomes em **Configurações do launcher → Wallpaper** agora abre a mesma personalização.
+O uso da engrenagem para esse menu é uma alteração deste fork AIWA.
+
+Limites: a galeria gerencia a coleção já instalada; não importa nem baixa novas imagens
+pelo controle. Arquivos ilegíveis não podem ser confirmados na prévia. Reaplicar ou
+resetar um tema explicitamente continua removendo as escolhas locais, como antes;
+limpar os dados ou desinstalar o app também remove as preferências. Temas antigos com
+escurecimento acima de 70% mantêm esse valor até o usuário ajustar o controle novo.
+
+### Arquivos da implementação
+
+Os caminhos abaixo são relativos a `cleanyourtv-main/`, salvo indicação em contrário.
+
+| Arquivos | Alteração |
+| --- | --- |
+| `launcher/app/src/main/java/com/gathin/tvhome/WallpaperSettingsActivity.java` | Menu, grade, prévia, escurecimento e navegação pelo controle. |
+| `WallpaperPreferences.java`, `WallpaperImageLoader.java`, `WallpaperDecoder.java`, no mesmo diretório | Preferências e solicitação de troca única; cache e carregamento assíncrono; decodificador compartilhado com a Home. |
+| `Config.java`, `WallpaperPlayer.java`, `WallpaperRotation.java` | Resolução das preferências, reprodução da escolha manual e inventário da galeria. |
+| `MainActivity.java`, `LauncherSettingsActivity.java`, `AppAdapter.java`, `GridNavigation.java` | Entradas de navegação, retorno às configurações, contraste dos textos e limites da grade. |
+| `launcher/app/src/main/AndroidManifest.xml`, `launcher/app/build.gradle` | Activity privada, versão 2.8 e build sem consultar VCS; mesmas permissões e dependências. |
+| `launcher/app/src/main/res/values*/wallpaper_strings.xml` | Rótulos em todos os 25 idiomas existentes. |
+| `WallpaperPreferencesTest.java`, `WallpaperGalleryNavigationTest.java`, `WallpaperRotationTest.java`, em `launcher/app/src/test/java/com/gathin/tvhome/`; `tests/test_wallpaper_resources.py` | Testes de estado, persistência, seleção, grade, inventário e traduções. |
+| `README.md`, `themes/README.md`; na raiz do projeto: `README.md`, `UPSTREAM.md`, `docs/images/wallpaper-settings.png`, `docs/images/wallpaper-gallery.jpg` | Uso, arquitetura, procedência, resultados e capturas reais do menu e da galeria. |
+
 ## Testes e limitações
 
 Os resultados abaixo são da configuração instalada e validada em 24/10/2026:
 
 | Verificação | Resultado |
 | --- | --- |
-| `testReleaseUnitTest lintRelease assembleRelease` | Build aprovado |
-| Testes Java do launcher com wallpapers | 234 testes; zero falhas e erros, incluindo oito testes novos dos eventos Home/retorno |
-| Android lint | Zero erros; 80 avisos |
-| APK release com wallpapers | 509.577 bytes, abaixo do limite de 524.288 bytes |
-| Regressão Python das chaves de tema | 25 testes aprovados |
+| `testReleaseUnitTest lintRelease assembleRelease`, em modo offline | Build aprovado; lint com zero erros e 81 avisos |
+| Testes Java do launcher 2.8 | 253 testes; zero falhas e erros, incluindo 19 testes novos de preferências, navegação e inventário |
+| Android lint | Zero erros; 81 avisos |
+| APK release 2.8 | 522.472 bytes, abaixo do limite de 524.288 bytes |
+| Regressões Python relevantes | 41 testes aprovados: chaves de tema, linhas das configurações, recursos hebraicos, traduções dos wallpapers e links Markdown |
 | Capturas e documentação das opções | Três testes aprovados; captura real do wallpaper dentro do limite de 300 KB |
 | Scripts PowerShell | Dois testes de envio de wallpapers e dois de proteção da restauração aprovados, em pastas isoladas |
 | Wallpapers na TV | 34 imagens com checksums iguais aos originais; cinco Home consecutivos e retorno de Configurações trocaram o fundo; sem evento a imagem permaneceu igual |
 | Wallpapers após reinício | Tema preservado, outro fundo sorteado e mesmos pacotes desativados |
 | Espera e retorno | Ciclo real `Asleep` → `Awake` acionado por ADB; outro wallpaper confirmado por captura da tela |
-| Suíte Python geral no Windows, executada na configuração inicial | 877 testes; 2 falhas, 121 erros, 22 ignorados; não reexecutada integralmente para esta alteração |
+| Personalização na TV, Android 14 | Grade e bordas, prévia e cancelamento, confirmação fixa, escurecimento 0–70% e troca manual com ambos os modos aprovados por teclas ADB na TV real |
+| Persistência do modo fixo | Mesma imagem após atualização do APK, três Home, espera/retorno e reinício completo; modo desativado e escurecimento de 35% restaurados |
+| Galeria sob uso repetido | Três percursos completos e três ciclos de prévia/cancelamento; foco restaurado e sem falha do launcher no buffer de crashes |
+| Suíte Python geral no Windows, reexecutada para a versão 2.8 | 878 testes; 2 falhas, 121 erros, 22 ignorados; mesmas causas de ambiente da execução inicial |
 | Causas dos erros Python | 109 ocorrências de WinError 2 por executáveis ausentes; 12 de WinError 1314 por privilégios de links simbólicos |
 | Causa das duas falhas Python | Testes de documentação esperavam `tools/venv/bin/pip`, enquanto o ambiente Windows utiliza `Scripts` |
 | Quatro favoritos | Abertura e retorno ao Home aprovados |
 | Navegação | Dock, grade, Entradas, Configurações e Wi-Fi aprovados |
 | Reinício | Home e conjunto exato de pacotes desativados preservados |
-| Controle físico | Home, setas/OK, Entradas, Configurações, volume, microfone e atalhos aprovados pelo proprietário |
+| Controle físico na configuração inicial | Home, setas/OK, Entradas, Configurações, volume, microfone e atalhos aprovados pelo proprietário; a validação automatizada da personalização usa os mesmos eventos de teclas Android |
 | Preservação | Todos os 142 pacotes originais presentes; DNS e animações iguais ao backup |
 | Restauração completa | Plano gerado e inspecionado; reversão completa não executada |
 
@@ -257,6 +369,12 @@ Nenhum teste foi removido ou alterado para ocultar falhas. Os testes Python util
 `TV_HOST=127.0.0.1`. Não foram utilizados vídeos pessoais nos testes automatizados.
 Reprodução protegida/DRM, imagem HDMI/TV ao vivo, transmissão Cast e CEC não foram testadas
 automaticamente. Não se afirma que anúncios internos dos apps sejam bloqueados.
+
+O ensaio curto da galeria não substitui um teste prolongado de memória. Não foi feito
+um benchmark formal de inicialização nem validado o menu em outros modelos ou versões
+de Android. O APK está próximo do limite de 512 KiB do projeto; novas funcionalidades
+precisam continuar respeitando esse limite. A TV foi devolvida ao sorteio e aos 30% de
+escurecimento do tema, após as escolhas temporárias usadas nos testes.
 
 Para repetir a validação Android, com as ferramentas preparadas, execute de dentro de
 `cleanyourtv-main/launcher/`:

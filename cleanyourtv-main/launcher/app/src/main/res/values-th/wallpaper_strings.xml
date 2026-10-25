@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_personalize">ปรับแต่ง</string>
+    <string name="wallpaper_random_state">วอลเปเปอร์แบบสุ่ม: %1$s</string>
+    <string name="wallpaper_gallery">แกลเลอรีวอลเปเปอร์</string>
+    <string name="wallpaper_change_now">เปลี่ยนวอลเปเปอร์ตอนนี้</string>
+    <string name="wallpaper_dimming">ความมืด: %1$d%%</string>
+    <string name="wallpaper_empty">ไม่มีวอลเปเปอร์ในเครื่อง</string>
+</resources>

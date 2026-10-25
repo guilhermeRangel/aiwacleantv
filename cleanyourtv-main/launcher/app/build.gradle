@@ -11,12 +11,13 @@ android {
         applicationId providers.gradleProperty('launcherApplicationId').getOrElse('com.gathin.tvhome')
         minSdk 26
         targetSdk 34
-        versionCode 8
-        versionName '2.7'
+        versionCode 9
+        versionName '2.8'
     }
 
     buildTypes {
         release {
+            vcsInfo { include false }
             // R8 strips and optimises the code (AndroidX included): smaller APK, faster start on a slow TV CPU.
             minifyEnabled true
             shrinkResources true
